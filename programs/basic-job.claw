@@ -6,11 +6,17 @@ export func run() -> u8 {
     log(level::info, "basic-job", "Job started");
 
     log(level::debug, "basic-job", "Executing 'ls'");
-    exec("ls");
+    let status = exec("ls");
+    if status != 0 {
+        return status;
+    }
 
     log(level::debug, "basic-job", "Executing 'sleep 3'");
-    exec("sleep 3");
-    
+    let status = exec("sleep 3");
+    if status != 0 {
+        return status;
+    }
+
     log(level::info, "basic-job", "Job finished");
     return 0;
 }
