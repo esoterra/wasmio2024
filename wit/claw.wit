@@ -5,5 +5,5 @@ world timer-proxy {
     import wasi:logging/logging;
 
     import foo: func(a: string) -> string;
-    export bar: func(a: string) -> string;
+    export foo: func(a: string) -> string;
 }

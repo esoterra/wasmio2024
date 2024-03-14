@@ -1,13 +1,13 @@
 import { now } from wasi:clocks/monotonic-clock;
 import { level, log } from wasi:logging/logging;
 
-import foo: func(a: string) -> string;
+import foo as bar: func(a: string) -> string;
 
 let max-nanos: u64 = 1_000_000_000;
 
-export func bar(a: string) -> string {
+export func foo(a: string) -> string {
     let start: u64 = now();
-    let res: string = foo(a);
+    let res: string = bar(a);
     let end: u64 = now();
 
     let elapsed: u64 = end - start;

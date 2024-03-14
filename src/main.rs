@@ -79,9 +79,9 @@ fn main() {
     let (timer, _) =
         TimerProxy::instantiate(&mut store, &component, &linker).unwrap();
 
-    timer.call_bar(&mut store, "a").unwrap();
-    timer.call_bar(&mut store, "b").unwrap();
-    timer.call_bar(&mut store, "slow-input").unwrap();
-    timer.call_bar(&mut store, "c").unwrap();
-    timer.call_bar(&mut store, "d").unwrap();
+    timer.call_foo(&mut store, "a").unwrap();
+    timer.call_foo(&mut store, "b").unwrap();
+    timer.call_foo(&mut store, "slow-input").unwrap();
+    timer.call_foo(&mut store, "c").unwrap();
+    timer.call_foo(&mut store, "d").unwrap();
 }
