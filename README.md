@@ -5,6 +5,7 @@
 ```sh
 cargo install claw-cli
 cargo install component-opt
+cargo install --git https://github.com/peterhuene/wac --locked
 ```
 
 ## Basic
@@ -12,6 +13,9 @@ cargo install component-opt
 ```sh
 claw-cli compile -i timer-proxy.claw -o timer-proxy.wasm --wit wit
 cargo run -- -i timer-proxy.wasm
+
+wac encode -d claw:plugin=plugin.wasm -d claw:timer-proxy=timer-proxy.wasm -o plugin-with-timer.wasm programs/
+plugin-with-timer.wac
 ```
 
 ## Component Optimization

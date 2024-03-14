@@ -1,5 +1,14 @@
 package claw:samples;
 
+world plugin {
+    import wasi:clocks/monotonic-clock;
+    import wasi:logging/logging;
+
+    import foo: func(a: string) -> string;
+
+    export run: func();
+}
+
 world timer-proxy {
     import wasi:clocks/monotonic-clock;
     import wasi:logging/logging;

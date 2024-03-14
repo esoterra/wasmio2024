@@ -27,11 +27,10 @@ fn main() {
     let mut linker = Linker::new(&engine);
     let mut store = Store::new(&engine, ());
 
-    bindgen!("timer-proxy" in "wit");
+    bindgen!("plugin" in "wit");
 
-    impl TimerProxyImports for () {
+    impl PluginImports for () {
         fn foo(&mut self, a: String) -> wasmtime::Result<String> {
-            println!("Called imported foo with \"{}\"", &a);
             match a.as_str() {
                 "slow-input" => {
                     std::thread::sleep(std::time::Duration::from_secs(2));
@@ -74,14 +73,9 @@ fn main() {
         }
     }
 
-    TimerProxy::add_to_linker(&mut linker, |s| s).unwrap();
+    Plugin::add_to_linker(&mut linker, |s| s).unwrap();
 
-    let (timer, _) =
-        TimerProxy::instantiate(&mut store, &component, &linker).unwrap();
+    let (plugin, _) = Plugin::instantiate(&mut store, &component, &linker).unwrap();
 
-    timer.call_foo(&mut store, "a").unwrap();
-    timer.call_foo(&mut store, "b").unwrap();
-    timer.call_foo(&mut store, "slow-input").unwrap();
-    timer.call_foo(&mut store, "c").unwrap();
-    timer.call_foo(&mut store, "d").unwrap();
+    plugin.call_run(&mut store).unwrap();
 }
