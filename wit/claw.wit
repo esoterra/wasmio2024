@@ -1,0 +1,9 @@
+package claw:samples;
+
+world timer-proxy {
+    import wasi:clocks/monotonic-clock;
+    import wasi:logging/logging;
+
+    import foo: func(a: string) -> string;
+    export bar: func(a: string) -> string;
+}

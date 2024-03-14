@@ -1,0 +1,18 @@
+import { now } from wasi:clocks/monotonic-clock;
+import { level, log } from wasi:logging/logging;
+
+import foo: func(a: string) -> string;
+
+let max-nanos: u64 = 1_000_000_000;
+
+export func bar(a: string) -> string {
+    let start: u64 = now();
+    let res: string = foo(a);
+    let end: u64 = now();
+
+    let elapsed: u64 = end - start;
+    if elapsed > max-nanos {
+        log(level::warn, "profiling", "Calling foo took a long time");
+    }
+    return res;
+}
