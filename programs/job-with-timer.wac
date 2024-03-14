@@ -1,0 +1,6 @@
+package claw:job-with-timer;
+
+let timer = new claw:timer-proxy { ... };
+let job = new claw:basic-job { "exec": timer.exec, ... };
+
+export job...;

@@ -1,0 +1,16 @@
+import { level, log } from wasi:logging/logging;
+
+import exec: func(command: string) -> u8;
+
+export func run() -> u8 {
+    log(level::info, "basic-job", "Job started");
+
+    log(level::debug, "basic-job", "Executing 'ls'");
+    exec("ls");
+
+    log(level::debug, "basic-job", "Executing 'sleep 3'");
+    exec("sleep 3");
+    
+    log(level::info, "basic-job", "Job finished");
+    return 0;
+}

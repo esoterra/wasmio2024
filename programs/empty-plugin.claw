@@ -1,5 +1,0 @@
-import { level, log } from wasi:logging/logging;
-
-export func run() {
-    log(level::info, "plugin", "Plugin started");
-}

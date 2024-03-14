@@ -1,18 +1,10 @@
 package claw:samples;
 
-world plugin {
+world job {
     import wasi:clocks/monotonic-clock;
     import wasi:logging/logging;
 
-    import foo: func(a: string) -> string;
+    import exec: func(command: string) -> u8;
 
-    export run: func();
-}
-
-world timer-proxy {
-    import wasi:clocks/monotonic-clock;
-    import wasi:logging/logging;
-
-    import foo: func(a: string) -> string;
-    export foo: func(a: string) -> string;
+    export run: func() -> u8;
 }

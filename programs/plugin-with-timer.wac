@@ -1,6 +1,0 @@
-package claw:plugin-with-timer;
-
-let timer = new claw:timer-proxy { ... };
-let plugin = new claw:plugin { "foo": timer.foo, ... };
-
-export plugin...;

@@ -5,6 +5,7 @@ use clap::Parser;
 
 use std::io::Read;
 use std::path::PathBuf;
+use std::process::ExitCode;
 
 #[derive(Parser, Debug)]
 struct Args {
@@ -12,7 +13,7 @@ struct Args {
     input: PathBuf,
 }
 
-fn main() {
+fn main() -> ExitCode {
     let args = Args::parse();
 
     let mut component_file = std::fs::File::open(args.input).unwrap();
@@ -27,17 +28,17 @@ fn main() {
     let mut linker = Linker::new(&engine);
     let mut store = Store::new(&engine, ());
 
-    bindgen!("plugin" in "wit");
+    bindgen!("job" in "wit");
 
-    impl PluginImports for () {
-        fn foo(&mut self, a: String) -> wasmtime::Result<String> {
+    impl JobImports for () {
+        fn exec(&mut self, a: String) -> wasmtime::Result<u8> {
             match a.as_str() {
-                "slow-input" => {
-                    std::thread::sleep(std::time::Duration::from_secs(2));
+                "sleep 3" => {
+                    std::thread::sleep(std::time::Duration::from_secs(3));
                 },
                 _ => {}
             }
-            wasmtime::Result::Ok(a)
+            wasmtime::Result::Ok(0)
         }
     }
 
@@ -73,9 +74,10 @@ fn main() {
         }
     }
 
-    Plugin::add_to_linker(&mut linker, |s| s).unwrap();
+    Job::add_to_linker(&mut linker, |s| s).unwrap();
 
-    let (plugin, _) = Plugin::instantiate(&mut store, &component, &linker).unwrap();
+    let (job, _) = Job::instantiate(&mut store, &component, &linker).unwrap();
 
-    plugin.call_run(&mut store).unwrap();
+    let status = job.call_run(&mut store).unwrap();
+    ExitCode::from(status)
 }

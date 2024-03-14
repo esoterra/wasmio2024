@@ -1,18 +1,18 @@
 import { now } from wasi:clocks/monotonic-clock;
 import { level, log } from wasi:logging/logging;
 
-import foo as bar: func(a: string) -> string;
+import exec as exec-import: func(command: string) -> u8;
 
 let max-nanos: u64 = 1_000_000_000;
 
-export func foo(a: string) -> string {
+export func exec(command: string) -> u8 {
     let start = now();
-    let res = bar(a);
+    let status = exec-import(command);
     let end = now();
 
     let elapsed: u64 = end - start;
     if elapsed > max-nanos {
-        log(level::warn, "profiling", "Calling import 'foo' with \"" + a + "\" took a long time");
+        log(level::warn, "profiling", "Executing '" + command + "' took a long time");
     }
-    return res;
+    return status;
 }

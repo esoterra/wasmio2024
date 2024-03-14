@@ -1,0 +1,6 @@
+import { level, log } from wasi:logging/logging;
+
+export func run() -> u8 {
+    log(level::info, "empty-job", "started!");
+    return 0;
+}
