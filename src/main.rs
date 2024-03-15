@@ -43,8 +43,8 @@ fn main() -> ExitCode {
 
             let mut child = Command::new(command)
                 .args(args[1..].iter())
-                .stdout(Stdio::piped())
-                .stderr(Stdio::piped())
+                .stdout(Stdio::inherit())
+                .stderr(Stdio::inherit())
                 .spawn()?;
 
             wasmtime::Result::Ok(child.wait()?.code().unwrap_or_default() as u8)
