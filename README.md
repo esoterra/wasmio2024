@@ -11,10 +11,10 @@ cargo build
 
 ## CI Jobs
 
-One use case for claw is writing lightweight scripts and automation in a high-level, type-safe, component-aware way.
-
 ```sh
 # Look at `job` world in wit/claw.wit
+
+# Look at src/main.rs
 
 # Test out an empty job
 claw-cli compile -i programs/empty-job.claw --wit wit -o empty-job.wasm
@@ -30,9 +30,6 @@ wac encode -d claw:basic-job=basic-job.wasm -d claw:timer-proxy=timer-proxy.wasm
 ```
 
 ## Component Optimization
-
-Use `component-opt` to optimize the binary size.
-This currently just runs `wasm-opt` on each module.
 
 ```sh
 # Print file size (expect 1212 bytes)
