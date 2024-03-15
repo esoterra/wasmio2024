@@ -5,7 +5,7 @@ use clap::Parser;
 
 use std::io::Read;
 use std::path::PathBuf;
-use std::process::ExitCode;
+use std::process::{Command, ExitCode, Stdio};
 
 #[derive(Parser, Debug)]
 struct Args {
@@ -32,13 +32,22 @@ fn main() -> ExitCode {
 
     impl JobImports for () {
         fn exec(&mut self, a: String) -> wasmtime::Result<u8> {
-            match a.as_str() {
-                "sleep 3" => {
-                    std::thread::sleep(std::time::Duration::from_secs(3));
-                },
-                _ => {}
+
+            let args: Vec<&str> = a.split(' ').collect();
+
+            if args.is_empty() {
+                return wasmtime::Result::Ok(0);
             }
-            wasmtime::Result::Ok(0)
+
+            let command = args.first().unwrap();
+
+            let mut child = Command::new(command)
+                .args(args[1..].iter())
+                .stdout(Stdio::piped())
+                .stderr(Stdio::piped())
+                .spawn()?;
+
+            wasmtime::Result::Ok(child.wait()?.code().unwrap_or_default() as u8)
         }
     }
 
